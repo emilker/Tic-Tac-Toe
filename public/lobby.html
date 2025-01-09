@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona una Sala - Tic Tac Toe</title>
+    <link rel="stylesheet" href="lobby.css">
+</head>
+<body>
+    <h1>Selecciona o Crea una Sala</h1>
+
+    <div id="rooms-list">
+        <h2>Salas Disponibles</h2>
+        <ul id="room-list-container">
+            <!-- Las salas se cargarán aquí dinámicamente -->
+        </ul>
+    </div>
+
+    <div class="buttons-container">
+        <button id="create-room">Crear Nueva Sala</button>
+        <button id="view-rules" onclick="window.location.href='rules.html'">Ver Reglas del Juego</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="lobby.js"></script>
+</body>
+</html>

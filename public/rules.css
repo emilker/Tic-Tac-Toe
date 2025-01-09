@@ -1,0 +1,20 @@
+#rules-container {
+    max-width: 600px;
+    text-align: left;
+    background-color: #ffffff20;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    line-height: 1.6;
+}
+
+#rules-container ol {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+#rules-container button {
+    display: block;
+    margin: 20px auto 0;
+}
