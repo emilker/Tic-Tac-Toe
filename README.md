@@ -1,6 +1,8 @@
 ﻿# 🎮 Tic Tac Toe Multiplayer (Node.js + Socket.IO)
 
-Un juego clásico de **Tres en Raya (Tic Tac Toe)** multijugador en tiempo real, desarrollado con **Node.js**, **Express** y **Socket.IO**.  
+Un juego clásico de **Tres en Raya (Tic Tac Toe)** multijugador en tiempo real.
+
+Esta desarrollado con **Node.js**, **Express** y **Socket.IO**.  
 Permite crear salas, unirse a partidas activas y jugar contra otro jugador en línea.
 
 ---
