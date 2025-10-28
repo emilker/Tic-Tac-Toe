@@ -9,7 +9,7 @@ const io = new Server(server);
 app.use(express.static('public')); // Sirve archivos estáticos en /public
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/lobby.html');
+    res.sendFile(__dirname + '/public/lobby/lobby.html');
 });
 
 // Variables para almacenar el estado del juego
@@ -42,22 +42,25 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Unirse a una sala
     socket.on('join_room', (roomName, callback) => {
         if (rooms[roomName]) {
             const room = rooms[roomName];
             if (room.players.length < 2) {
-                const playerSymbol = room.players.length === 0 ? 'X' : 'O'; // El primer jugador es X, el segundo es O
+                const playerSymbol = room.players.length === 0 ? 'X' : 'O';
                 room.players.push(socket.id);
                 socket.join(roomName);
-                callback({ success: true, playerSymbol }); // Devuelve el símbolo del jugador al cliente
+                callback({ success: true, playerSymbol });
+
+                // 🔹 Enviar estado actual del tablero y turno al nuevo jugador
+                socket.emit('board_update', room.board);
+                socket.emit('turn_change', room.turn);
+
                 io.to(roomName).emit('room_update', rooms[roomName]);
-    
-                // Cuando la sala tenga 2 jugadores, comienza el juego
+
                 if (room.players.length === 2) {
                     io.to(roomName).emit('start_game', { turn: room.turn });
                 }
-    
+
                 io.emit('rooms_list', Object.keys(rooms).map(roomId => ({
                     name: roomId,
                     status: rooms[roomId].players.length === 2 ? 'Llena' : 'Disponible',
@@ -69,6 +72,7 @@ io.on('connection', (socket) => {
             callback({ success: false, message: 'La sala no existe.' });
         }
     });
+
     
 
     socket.on('make_move', (roomId, index) => {

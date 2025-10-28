@@ -1,0 +1,128 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4a90e2, #50c9c3);
+    color: #fff;
+}
+
+/* Header */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Rooms List Container */
+#rooms-list {
+    width: 90%;
+    max-width: 600px;
+    background-color: #ffffff20;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#rooms-list h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #e8f0fe;
+}
+
+#room-list-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Room List Items */
+#room-list-container li {
+    background: #ffffff20;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #e8f0fe;
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+}
+
+#room-list-container li:hover {
+    background: #ffffff40;
+}
+
+/* Button */
+button {
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4a90e2;
+    background: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    #rooms-list {
+        width: 95%;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+}
+#rules-container {
+    max-width: 600px;
+    text-align: left;
+    background-color: #ffffff20;
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    color: #fff;
+    line-height: 1.6;
+}
+
+#rules-container ol {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+#rules-container button {
+    display: block;
+    margin: 20px auto 0;
+}
