@@ -73,8 +73,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    
-
     socket.on('make_move', (roomId, index) => {
         const room = rooms[roomId];
         // Verificar si el movimiento es válido
