@@ -1,58 +1,113 @@
 const socket = io();
 
 const urlParams = new URLSearchParams(window.location.search);
-const roomName = urlParams.get('room'); // Obtiene el nombre de la sala desde la URL
+const roomName = urlParams.get('room'); 
 
-let playerSymbol;  // 'X' o 'O'
-
-// Elementos del DOM
+const backButton = document.getElementById('back-to-lobby');
 const cells = document.querySelectorAll('.cell');
 const status = document.getElementById('status');
 const winnerMessage = document.getElementById('winner-message');
 
-// Función para unir al jugador a la sala
+let playerSymbol = null;
+let gameStarted = false;  
+
+// -------------------------
+//  UNIRSE A LA SALA
+// -------------------------
 function joinRoom() {
     socket.emit('join_room', roomName, (response) => {
         if (response.success) {
-            playerSymbol = response.playerSymbol; // Asigna el símbolo recibido del servidor
-            console.log('Unido a la sala correctamente');
-            status.textContent = `Esperando al segundo jugador...`;
+
+            playerSymbol = response.playerSymbol;
+
+            // Mensaje real cuando entras
+            status.textContent = `Eres ${playerSymbol}. Esperando al segundo jugador...`;
+
         } else {
             alert(response.message);
-            window.location.href = '/lobby/lobby.html'; // Regresa al lobby si la sala no existe o está llena
+            window.location.href = '/lobby/lobby.html';
         }
     });
 }
 
-// Llamar a `joinRoom` solo cuando el jugador esté listo para unirse
-joinRoom(); // Llamada cuando la página se ha cargado y se ha comprobado la sala
+joinRoom();
 
-// Realiza un movimiento en el tablero cuando un jugador hace clic en una celda
+// -----------------------------
+//  CLICK EN CELDA (MOVIMIENTO)
+// -----------------------------
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
+
+        // BLOQUEADO si el juego no ha iniciado
+        if (!gameStarted) return;
+
         const index = cell.getAttribute('data-index');
         socket.emit('make_move', roomName, index);
     });
 });
 
-// Inicia el juego al recibir el evento 'start_game' del servidor
+// -----------------------------
+//  INICIO DEL JUEGO
+// -----------------------------
 socket.on('start_game', () => {
+    gameStarted = true;
     status.textContent = `Juego iniciado, eres ${playerSymbol}`;
 });
 
-// Actualiza el tablero cuando recibe una actualización del servidor
+// -----------------------------
+//  TABLERO ACTUALIZADO
+// -----------------------------
 socket.on('board_update', (board) => {
     board.forEach((symbol, index) => {
         cells[index].textContent = symbol;
     });
 });
 
-// Cambio de turno
+// -----------------------------
+//  CAMBIO DE TURNO
+// -----------------------------
 socket.on('turn_change', (turn) => {
     status.textContent = `Turno de ${turn}`;
 });
 
-// Fin del juego
+// -----------------------------
+//  PARTIDA TERMINADA
+// -----------------------------
 socket.on('game_over', ({ winner }) => {
-    winnerMessage.textContent = `Juego terminado. Ganador: ${winner}`;
+    
+    winnerMessage.innerHTML = `
+        <div>Ganador: ${winner}</div>
+    `;
+    winnerMessage.style.display = "block";
+
+    backButton.style.display = "block";
+
+    cells.forEach(cell => {
+        cell.style.pointerEvents = 'none';
+    });
+});
+
+// -----------------------------
+//  EL OTRO JUGADOR SE FUE
+// -----------------------------
+socket.on('opponent_left', ({ message }) => {
+
+    winnerMessage.innerHTML = `
+        <div>Juego terminado.</div>
+        <div>${message}</div>
+    `;
+    winnerMessage.style.display = "block";
+
+    backButton.style.display = "block";
+
+    cells.forEach(cell => {
+        cell.style.pointerEvents = 'none';
+    });
+});
+
+// -----------------------------
+//  VOLVER AL LOBBY
+// -----------------------------
+backButton.addEventListener('click', () => {
+    window.location.href = '/lobby/lobby.html';
 });
